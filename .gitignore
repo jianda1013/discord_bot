@@ -2,6 +2,8 @@ node_modules
 playlist
 .DS_STORES
 .env
+.env.mysql
 package-lock.json
 historylog
 env.json
+db_data

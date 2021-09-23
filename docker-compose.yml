@@ -1,8 +1,39 @@
 version: "3"
+
+networks:
+  discord:
+    driver: bridge
  
 services:
-  music-bot:
+  bot:
     restart: always
     build: .
     volumes:
-      - .:/home
+      - ".:/home"
+      - "/home/node_modules"
+    env_file:
+      - .env
+      - .env.mysql
+    networks:
+      - discord
+  mysql:
+    restart: always
+    image: mariadb:10.5
+    env_file:
+      - .env.mysql
+    volumes:
+      - "./db_data:/var/lib/mysql"
+    networks:
+      discord:
+        aliases:
+          - "mysql"
+  phpmyadmin:
+    restart: always
+    image: phpmyadmin:latest
+    environment:
+      - PMA_HOST=mysql
+      - UPLOAD_LIMIT=8192M
+    ports:
+      - "8181:80"
+    networks:
+      - discord

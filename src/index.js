@@ -1,33 +1,17 @@
 const Discord = require('discord.js');
-const usage = require('./Setting/usage');
-const setting = require('../config.json');
-const env = require('../env.json');
-const fs = require('fs');
-const Music = require('./Music');
+const db = require('./db');
+
+try { db.migrate.latest() }
+catch { console.log(migrate) }
 
 const client = new Discord.Client();
 
-client.once('ready', async() => {
-    console.log('Ready!');
-    setting.textChannel = client.channels.cache.find(channel => channel.name === '🟫歌曲推薦');
-    setting.voiceChannel = client.channels.cache.find(channel => channel.name === '🟫DJ放送');
-    Music.start(setting);
+client.once('ready', async () => {
+    console.log('hello!');
 });
 
-client.on('message', async message => {
+require('./msg')(client)
 
-    if (message.author.bot) { return; }
-    if (message.channel != setting.textChannel) { return; }
-    if (!message.content.startsWith('!')) { return; }
-
-    fs.appendFile('/home/src//historylog', ((new Date()).toString() + ', ' + message.author.username + ', ' + message.content + '\n'), err => { if (err) { console.log(err); } })
-
-    if (message.content === '!help') { usage.instruct(message); }
-    if (message.content === '!play') { Music.play(setting); }
-    else if (message.content.startsWith('!play ')) { Music.add(message, setting); }
-    else if (message.content === '!skip') { Music.skipMusic(setting); }
-    else if (message.content === '!stop') { Music.stop(setting); }
-    // else if (message.content === '!list') { Music.listMusic(message, setting); }
+client.login(process.env.DC_TOKEN, () => {
+    console.log('success')
 });
-
-client.login(env.DC_TOKEN);
