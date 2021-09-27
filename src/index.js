@@ -1,10 +1,7 @@
 const Discord = require('discord.js');
-const db = require('./db');
+require('./db').db.migrate.latest()
 
-try { db.migrate.latest() }
-catch { console.log(migrate) }
-
-const client = new Discord.Client();
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 
 client.once('ready', async () => {
     console.log('hello!');

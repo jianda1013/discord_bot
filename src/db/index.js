@@ -1,5 +1,5 @@
-const knex = require('knex');
-module.exports = knex({
+const knex = require('knex')
+const db = knex({
     client: 'mysql',
     connection: {
         host: process.env.MYSQL_HOST,
@@ -10,4 +10,12 @@ module.exports = knex({
         timezone: 'UTC',
         dateStrings: true,
     },
-});
+})
+
+const knexError = (err, msg = undefined) => {
+    console.log(err)
+    if (msg)
+        msg.reply({ content: 'SQL_ERROR', ephemeral: true })
+}
+
+module.exports = { db, knexError }
