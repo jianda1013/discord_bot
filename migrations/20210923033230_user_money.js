@@ -1,11 +1,12 @@
 
 exports.up = function (knex) {
-    return knex.schema.hasTable("channel").then(exists => {
+    return knex.schema.hasTable("money").then(exists => {
         if (!exists) {
-            return knex.schema.createTable("channel", function (table) {
+            return knex.schema.createTable("money", function (table) {
                 table.increments("id").unsigned();
                 table.string("channel_id");
-                table.string("register");
+                table.string("user_id");
+                table.integer("assets");
                 table.timestamp("created_at").defaultTo(knex.fn.now());
             });
         }
@@ -13,5 +14,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-    return knex.schema.dropTableIfExists("channel");
+    return knex.schema.dropTableIfExists("money");
 };

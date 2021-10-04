@@ -8,7 +8,6 @@ client.once('ready', async () => {
 });
 
 require('./msg')(client)
-require('./gamble/guessing')
 
 client.login(process.env.DC_TOKEN, () => {
     console.log('success')

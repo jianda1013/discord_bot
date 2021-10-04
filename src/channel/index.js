@@ -12,6 +12,7 @@ let self = module.exports = {
     },
 
     regist(msg) {
+        console.log(1)
         self.getInfo(msg).then(exist => {
             if (!exist)
                 db('channel').insert({ channel_id: msg.channel.parentId, register: msg.author.id })
