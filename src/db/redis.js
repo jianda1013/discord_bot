@@ -8,15 +8,15 @@ client.on("error", err => {
 
 let self = module.exports = {
 
-    create({ request, key, data, expire }) {
-        client.hset(request, key, JSON.stringify(data))
-        client.expire(request, expire || process.env.CACHE_EXPIRED_TIME || _DAY_SECONDS / 2);
-        return Promise.resolve(true)
+    create({ key, field, value, expire }) {
+        client.hset(key, field, JSON.stringify(value))
+        client.expire(key, expire || process.env.CACHE_EXPIRED_TIME || _DAY_SECONDS / 2);
+        return 0;
     },
 
-    get({ request, key }) {
+    get({ key, field }) {
         return new Promise((resolve, reject) => {
-            client.hget(request, key, (err, result) => {
+            client.hget(key, field, (err, result) => {
                 if (err) {
                     console.log(err);
                     reject('err');
@@ -25,6 +25,13 @@ let self = module.exports = {
                     resolve(result);
             })
         })
+    },
+
+    del({ key, field }) {
+        if (field !== undefined)
+            client.hdel(key, field)
+        else
+            client.del(key)
     },
 
     clean() {
