@@ -3,6 +3,17 @@ const { knex, knexError, redis } = require('../db');
 
 let self = module.exports = {
 
+    gameStart(msg) {
+        const row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId('test')
+                    .setLabel('Hello')
+                    .setStyle('PRIMARY'),
+            );
+        msg.reply({ content: 'Pong!', components: [row] });
+    },
+
     shuffle() {
         const cards = Array.from({ length: 52 }, (x, i) => i);
         for (let i = cards.length - 1; i > 0; i--) {

@@ -8,7 +8,7 @@ module.exports = client => {
             if (msg.content === 'init')
                 Poker.init(msg)
             if (msg.content === 'join')
-                Poker.join(msg)
+                Poker.gameStart(msg)
             if (msg.content === 'flop')
                 Poker.initBoard(msg)
             if (msg.content === 'fold')
