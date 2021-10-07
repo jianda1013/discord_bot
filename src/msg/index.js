@@ -8,13 +8,16 @@ module.exports = client => {
             if (msg.content === 'init')
                 Poker.init(msg)
             if (msg.content === 'join')
-                Poker.gameStart(msg)
+                Poker.join(msg)
             if (msg.content === 'flop')
                 Poker.initBoard(msg)
             if (msg.content === 'fold')
                 Poker.fold(msg)
-
-
         }
+    }),
+
+    client.on("interactionCreate", async msg => {
+        console.log(msg.customId)
+        msg.reply('good')
     })
 }

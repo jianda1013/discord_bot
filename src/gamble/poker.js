@@ -7,11 +7,26 @@ let self = module.exports = {
         const row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
-                    .setCustomId('test')
-                    .setLabel('Hello')
-                    .setStyle('PRIMARY'),
-            );
-        msg.reply({ content: 'Pong!', components: [row] });
+                    .setCustomId('call')
+                    .setLabel('call')
+                    .setStyle('PRIMARY')
+            ).addComponents(
+                new MessageButton()
+                    .setCustomId('check')
+                    .setLabel('check')
+                    .setStyle('SUCCESS')
+            ).addComponents(
+                new MessageButton()
+                    .setCustomId('raise')
+                    .setLabel('raise')
+                    .setStyle('SUCCESS')
+            ).addComponents(
+                new MessageButton()
+                    .setCustomId('fold')
+                    .setLabel('check')
+                    .setStyle('DANGER')
+            )
+        msg.reply({ content: 'gaming start', components: [row] });
     },
 
     shuffle() {
@@ -32,9 +47,10 @@ let self = module.exports = {
     },
 
     init({ channel: { parentId } }) {
-        const value = self.shuffle();
+        const card = self.shuffle();
         redis.del({ key: parentId })
-        return redis.create({ key: parentId, field: 'card', value })
+        redis.create({ key: parentId, field: 'pool', value: 0 })
+        return redis.create({ key: parentId, field: 'card', value: card })
     },
 
     async giveCard(msg) {
@@ -46,9 +62,9 @@ let self = module.exports = {
         return msg.reply({ content: JSON.stringify(value), ephemeral: false })
     },
 
-    call() {
-
-    },
+    // call(msg) {
+    //     redis.
+    // },
 
     raise() {
 
@@ -59,13 +75,9 @@ let self = module.exports = {
     },
 
     async join(msg) {
-        let hand = [];
-        for (let i = 0; i < 2; i++) {
-            let item = await self.draw(msg)
-            hand.push(item)
-        }
-        redis.create({ key: msg.channel.parentId, field: msg.author.id, value: hand })
-        return msg.reply({ content: JSON.stringify(hand), ephemeral: true })
+        console.log(msg.author)
+        redis.create({ key: msg.channel.parentId, field: msg.author.id, value: { pool: 0 } })
+        return msg.reply({ content: `${msg.author.username} has join the game`, ephemeral: false })
     },
 
     async initBoard(msg) {
