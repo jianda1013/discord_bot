@@ -16,14 +16,24 @@ let self = module.exports = {
 
     get({ key, field }) {
         return new Promise((resolve, reject) => {
-            client.hget(key, field, (err, result) => {
-                if (err) {
-                    console.log(err);
-                    reject('err');
-                }
-                else
-                    resolve(result);
-            })
+            if (field)
+                client.hget(key, field, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        reject('err');
+                    }
+                    else
+                        resolve(result);
+                })
+            else
+                client.hgetall(key, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        reject('err');
+                    }
+                    else
+                        resolve(result);
+                })
         })
     },
 
