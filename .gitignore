@@ -3,6 +3,7 @@ playlist
 .DS_STORES
 .env
 .env.mysql
+.env.minio
 package-lock.json
 historylog
 env.json
