@@ -37,3 +37,16 @@ services:
       - "8181:80"
     networks:
       - discord
+  minio:
+    image: "minio/minio:latest"
+    restart: always
+    command: "server /data --console-address \":9001\""
+    env_file:
+      - .env.minio
+    volumes:
+      - "./minio_data/.minio:/root/.minio"
+      - "./minio_data/export:/export"
+    ports:
+      - "9000:9001"
+    networks:
+      - discord
