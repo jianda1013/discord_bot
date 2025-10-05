@@ -1,3 +1,18 @@
+# Binaries and build artifacts
+tmp/
+bin/
+
+# Go modules cache (used in container via volume)
+aircache/
+
+# Env files
+.env
+
+# Editor/OS
+.DS_Store
+.idea/
+.vscode/
+
 # If you prefer the allow list template instead of the deny list, see community template:
 # https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
 #
